@@ -2,17 +2,15 @@ import { Request, Response, NextFunction } from 'express'
 import { middleware } from 'express-openapi-validator';
 import profileRouter from './profile'
 
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 
-router.use(
-  middleware({
+const apiOASValidatorMiddleware = middleware({
     apiSpec: './openapi.json',
     validateRequests: true, // (default)
     validateResponses: true, // false by default
-  }),
-);
+  })
 
-router.use('/profile', profileRouter)
+router.use('/profile', apiOASValidatorMiddleware, profileRouter)
 
 export default router

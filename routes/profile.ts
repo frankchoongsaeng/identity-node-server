@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 
 /* GET profile listings for user. */
 router.get('/', function (_: Request, res: Response<Profile[]>) {
