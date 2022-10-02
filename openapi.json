@@ -1,0 +1,123 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "Identity Manager",
+		"description": "A RESTful service that enables Identity management",
+		"contact": {
+			"email": "frankchoongsaeng@gmail.com",
+			"name": "Frank Choongsaeng"
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000/v1",
+			"description": "local development server"
+		}
+	],
+	"components": {
+		"schemas": {
+			"profileObject": {
+				"type": "object",
+				"properties": {
+					"description": { "type": "string" },
+					"firstName": { "type": "string" },
+					"middleName": { "type": "string" },
+					"lastName": { "type": "string" },
+					"email": { "type": "string" },
+					"password": { "type": "string" }
+				},
+				"required": ["profileDescription"]
+			}
+		},
+		"examples": {
+			"minimalProfileResponse": {
+				"description": "The minimal expected structure of a profile response",
+				"value": {
+					"profileDescription": "My example profile"
+				}
+			},
+			"completeProfileResponse": {
+				"description": "A profile response with all possible fields to be returned",
+				"value": {
+					"profileDescription": "Complete Profile",
+					"firstName": "John",
+					"middleName": "Hanson",
+					"lastName": "Doe",
+					"email": "handsome.jon@mail.com",
+					"password": "secret_password12331@%"
+				}
+			}
+		}
+	},
+	"paths": {
+		"/profile": {
+			"description": "Endpoint for profile management",
+			"get": {
+				"description": "Get all the profiles for a user",
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/profileObject"
+									}
+								},
+								"examples": {
+									"minimal": {
+										"$ref": "#/components/examples/minimalProfileResponse"
+									},
+									"complete": {
+										"$ref": "#/components/examples/completeProfileResponse"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Authentication Required"
+					}
+				}
+			},
+			"post": {
+				"description": "Create a new profile",
+				"requestBody": {
+					"description": "A profile object",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/profileObject"
+							},
+							"example": {
+								"$ref": "#/components/examples/completeProfileResponse"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Profile created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/profileObject"
+								},
+								"example": {
+									"$ref": "#/components/examples/completeProfileResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request"
+					}
+				}
+			}
+		}
+	}
+}
